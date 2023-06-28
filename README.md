@@ -4,7 +4,7 @@
 </p>
 
 # DocAligner 
-This repository contains the codes for [**DocAligner**](xxx).
+This repository contains the codes for [**DocAligner: Annotating Real-world Photographic Document Images by Simply Taking Pictures**](https://arxiv.org/abs/2306.05749).
 
 
 ## environment
@@ -14,12 +14,6 @@ conda env create -f environment.yml
 The correlation layer is implemented in CUDA using CuPy, so CuPy is a required dependency. It can be installed using pip install cupy or alternatively using one of the provided binary packages as outlined in the CuPy repository. The code was developed using Python 3.7 & PyTorch 1.11 & CUDA 11.2, which is why I installed cupy for cuda112. For another CUDA version, change accordingly.
 ```
 pip install cupy-cuda112 --no-cache-dir
-```
-
-
-## Training
-```
-train_efficient_glu_gru.py
 ```
 
 ## Inference:
@@ -38,6 +32,13 @@ python infer_test_time_optimize.py --mode 2 --im_folder ./data/dataset1/all_data
 python data/sum_backwardmap.py --im_folder ./data/dataset1/all_data/
 ```  
 5. Annotation transform (COCO format). Please refer to `data/annotate_transform.py`. We also provide a script for COCO data visualization: `data/coco_visualize.py`
+
+## Training
+```
+train_efficient_glu_gru.py
+```
+
+## Our aquired datasets
 
 
 
