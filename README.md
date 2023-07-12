@@ -43,7 +43,7 @@ python tools/sum_backwardmap.py --im_folder ./data/dataset_folder
 
 
 ## DocAligner-acquired Dataset
-The dataset mentioned in our paper, obtained using DocAligner, for document layout analysis, table structure recognition, illumination correction, binarization and geometric rectification tasks can be downloaded [**here**](https://arxiv.org/abs/2306.05749](https://1drv.ms/f/s!Ak15mSdV3Wy4iOdLD3VCxzSeC82mJg?e=afLUBP).
+The dataset mentioned in our paper, obtained using DocAligner, for document layout analysis, table structure recognition, illumination correction, binarization and geometric rectification tasks can be downloaded [**here**](https://1drv.ms/f/s!Ak15mSdV3Wy4iOdLD3VCxzSeC82mJg?e=afLUBP).
 
 
 
