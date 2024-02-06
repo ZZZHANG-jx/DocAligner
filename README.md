@@ -1,11 +1,10 @@
-
-<p align="center">
-  <img src="img/motivation.jpg">
-</p>
+🔥 A comprehensive recommendation for Document Image Processing is available at [here](https://github.com/ZZZHANG-jx/Recommendations-Document-Image-Processing).
 
 # DocAligner 
 This repository contains the codes for [**DocAligner**](https://arxiv.org/abs/2306.05749).
-
+<p align="center">
+  <img src="img/motivation.jpg">
+</p>
 <!-- 
 ## environment
 ```
