@@ -1,9 +1,0 @@
-
-# test gie+bm
-python infer.py --wc_model_path ./eval/models/unetnc_doc3d.pkl --bm_model_path ./eval/models/dnetccnl_doc3d.pkl --show
-
-# test gie
-python infer_gie.py --arch gie --wc_model_path ./checkpoints-wc/new_unet-8e34e3b/best.pkl --img_path ./dataset/img/5/ --out_path /home/zhangjiaxin/out_pics
-
-# train gie
-python traingie.py --arch gie --data_path ./dataset --batch_size 50 --n_epoch 100 --tboard
