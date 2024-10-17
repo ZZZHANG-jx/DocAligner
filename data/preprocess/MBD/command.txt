@@ -1,0 +1,30 @@
+
+# test gie+bm
+python infer.py --wc_model_path ./eval/models/unetnc_doc3d.pkl --bm_model_path ./eval/models/dnetccnl_doc3d.pkl --show
+
+# test gie
+python infer_gie.py --arch gie --wc_model_path ./checkpoints-wc/new_unet-8e34e3b/best.pkl --img_path ./dataset/img/5/ --out_path /home/zhangjiaxin/out_pics
+
+# train gie
+python traingie.py --arch gie --data_path ./dataset --batch_size 32 --n_epoch 100 --experiment_name double_unet
+
+# train giemask with doc mask
+python traingiemask.py --arch giemask --data_path ./dataset --batch_size 16 --n_epoch 100 --experiment_name mask
+
+# test giemask 
+python infer_giemask.py --arch giemask --wc_model_path ./checkpoints-wc/mask/000best.pkl --img_path ./dataset/img/5/ --out_path /home/zhangjiaxin/out_pics
+
+# train giemask2 with doc and edge mask
+python traingiemask2.py --arch giemask2 --data_path ./dataset --batch_size 16 --n_epoch 100 --experiment_name mask
+
+# test giemask2 
+python infer_giemask2.py --arch giemask2 --wc_model_path ./checkpoints-wc/mask/000best.pkl --img_path ./dataset/img/5/ --out_path /home/zhangjiaxin/out_pics
+
+# train bmp
+python trainbmp.py --gie_model ./checkpoints-wc/doubleunet_mask2/best0.005157.pkl --data_path ./dataset --batch_size 16 --n_epoch 100 --experiment_name bmp
+
+# test bmp
+python infer_bmp.py --arch giemask2 --wc_model_path ./checkpoints-wc/doubleunet_mask2/best0.005157.pkl --bm_model_path ./checkpoints-wc/bmp2/best0.000117.pkl --img_path ./dataset/img/5/ --out_path /home/zhangjiaxin/out_pics --suffix _cb2
+
+# train cr
+python traincr.py --data_path ./dataset --batch_size 16 --n_epoch 100 --experiment_name bmp
