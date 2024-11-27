@@ -6,16 +6,16 @@ import math
 import os
 import sys
 import torch.nn.functional as F
-from models.glu_doc.feature_backbones.VGG_features import VGGPyramid
-from models.glu_doc.feature_backbones.ResNet_features import ResNetPyramid,ResNetcontext
+from models.docaligner.feature_backbones.VGG_features import VGGPyramid
+from models.docaligner.feature_backbones.ResNet_features import ResNetPyramid,ResNetcontext
 from .mod import CMDTop
-from models.glu_doc.our_models.mod import OpticalFlowEstimatorNoDenseConnection, OpticalFlowEstimator, FeatureL2Norm, \
+from models.docaligner.aligner.mod import OpticalFlowEstimatorNoDenseConnection, OpticalFlowEstimator, FeatureL2Norm, \
     CorrelationVolume, deconv, conv, predict_flow, unnormalise_and_convert_mapping_to_flow, warp
-from models.glu_doc.our_models.consensus_network_modules import MutualMatching, NeighConsensus, FeatureCorrelation
-from models.glu_doc.correlation import correlation # the custom cost volume layer
+from models.docaligner.aligner.consensus_network_modules import MutualMatching, NeighConsensus, FeatureCorrelation
+from models.docaligner.correlation import correlation # the custom cost volume layer
 import numpy as np
 from .bilinear_deconv import BilinearConvTranspose2d
-from models.glu_doc.our_models.gru_block import BasicUpdateBlock,SmallUpdateBlock
+from models.docaligner.aligner.gru_block import BasicUpdateBlock,SmallUpdateBlock
 # try:
 #     autocast = torch.cuda.amp.autocast
 # except:
@@ -48,9 +48,9 @@ def upsample_flow2(flow, mask):
     up_flow = up_flow.permute(0, 1, 4, 2, 5, 3)
     return up_flow.reshape(N, 2, 2*H, 2*W)
 
-class GLUNet_model(nn.Module):
+class DocAligner_model(nn.Module):
     '''
-    GLU-Net
+    DocAligner
     '''
 
     def __init__(self, evaluation, div=1.0, iterative_refinement=False,
@@ -61,7 +61,7 @@ class GLUNet_model(nn.Module):
         input: md --- maximum displacement (for correlation. default: 4), after warpping
 
         """
-        super(GLUNet_model, self).__init__()
+        super(DocAligner_model, self).__init__()
         self.div=div
         self.pyramid_type = pyramid_type
         self.leakyRELU = nn.LeakyReLU(0.1)

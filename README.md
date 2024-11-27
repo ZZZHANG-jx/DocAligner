@@ -23,10 +23,16 @@ pip install cupy-cuda112 --no-cache-dir
 ``` 
 
 ## Training
-Coming soon
-<!-- ```
-python train_efficient.py
-``` -->
+1. Data preparation 
+    * Use our provided script [synthv2.py](./data/DocAlign12K/flow_synth/synthv2.py) to synthesize training data, or directly download the [DocAlign12K]() dataset we used for training.
+    * Notably, to enhance the diversity of the synthetic data, we use an online manner for shadow synthesis. The 500 shadow background images we collected can be downloaded [here](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp).
+    * In `train.py`, set `data_path` to the path of the synthetic dataset. In `loader/docalign12k.py`, set `self.shadow_paths` to the path where the shadow images are located.
+
+2. Training
+
+```
+bash train.sh
+```
 
 
 ## Inference
@@ -82,3 +88,5 @@ year={2023}}
 
 ## ⭐ Star Rising
 [![Star Rising](https://api.star-history.com/svg?repos=ZZZHANG-jx/DocAligner&type=Timeline)](https://star-history.com/#ZZZHANG-jx/DocAligner&Timeline)
+
+Some codes are based on [Marior](https://github.com/ZZZHANG-jx/Marior) and [GLU-Net](https://github.com/PruneTruong/GLU-Net). Thanks to all the authors for their great work.

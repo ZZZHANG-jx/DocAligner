@@ -183,7 +183,7 @@ def optimize(args,warp_path):
         warp_img_resize = cv2.resize(warp_img_mask, img_size)
         warp_img_org = cv2.resize(warp_img_org, (w_org,h_org))
 
-        warp_img_list = self_ensembel(warp_img_resize,glob.glob('data/augmentation_flow/*'),BATCHSIZE-1)
+        warp_img_list = self_ensembel(warp_img_resize,glob.glob('data/augmentation_flow/forwardmap_hard/*/*'),BATCHSIZE-1)
 
         warp_sobels = torch.zeros(BATCHSIZE,1,1024,1024).float().cuda()
         for i, warp_img_resize in enumerate(warp_img_list):
@@ -301,8 +301,7 @@ def optimize_finetune(args,warp_paths,training_epoch=10):
 
                 flat_img_org = cv2.imread(flat_path)
                 flat_img_resize = cv2.resize(flat_img_org.copy(), img_size)
-                    
-                warp_img_resize = self_augment(warp_img_resize,glob.glob('./data/synth/forwardmap_hard/*/*'))
+                warp_img_resize = self_augment(warp_img_resize,glob.glob('data/augmentation_flow/forwardmap_hard/*/*'))
                 # warp_img_resize = warp_img_resize
                 warp_img = warp_img_resize.astype(float) / 255.0
                 warp_img = (warp_img-0.5)*2
@@ -492,7 +491,7 @@ if __name__ == '__main__':
 
         
     # initial model loading
-    model = get_model('glu', n_classes=2, in_channels=6, img_size=1024)
+    model = get_model('docaligner', n_classes=2, in_channels=6, img_size=1024)
     model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
     model.cuda()
     if not args.model_path is None:
