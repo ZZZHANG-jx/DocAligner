@@ -70,7 +70,7 @@ if __name__ == '__main__':
                         help='Height of the input image')
     parser.add_argument('--img_cols', nargs='?', type=int, default=448, 
                         help='Width of the input image')
-    parser.add_argument('--seg_model_path', nargs='?', type=str, default='./data/preprocess/MBD/checkpoints/mbd.pkl',
+    parser.add_argument('--seg_model_path', nargs='?', type=str, default='checkpoint/mbd.pkl',
                         help='Path to previous saved model to restart from')
     args = parser.parse_args()
 

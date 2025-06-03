@@ -6,8 +6,7 @@ import math
 import os
 import sys
 import torch.nn.functional as F
-from models.docaligner.feature_backbones.VGG_features import VGGPyramid
-from models.docaligner.feature_backbones.ResNet_features import ResNetPyramid,ResNetcontext
+from models.docaligner.feature_backbones.ResNet_features import ResNetPyramid
 from .mod import CMDTop
 from models.docaligner.aligner.mod import OpticalFlowEstimatorNoDenseConnection, OpticalFlowEstimator, FeatureL2Norm, \
     CorrelationVolume, deconv, conv, predict_flow, unnormalise_and_convert_mapping_to_flow, warp
@@ -15,7 +14,7 @@ from models.docaligner.aligner.consensus_network_modules import MutualMatching, 
 from models.docaligner.correlation import correlation # the custom cost volume layer
 import numpy as np
 from .bilinear_deconv import BilinearConvTranspose2d
-from models.docaligner.aligner.gru_block import BasicUpdateBlock,SmallUpdateBlock
+from models.docaligner.aligner.gru_block import SmallUpdateBlock
 # try:
 #     autocast = torch.cuda.amp.autocast
 # except:
@@ -187,20 +186,12 @@ class DocAligner_model(nn.Module):
                 if m.bias is not None:
                     m.bias.data.zero_()
 
-        # if pyramid_type == 'ResNet':
-        #     self.pyramid = ResNetPyramid()
-        # else:
-        #     self.pyramid = VGGPyramid()
+
 
         self.pyramid = ResNetPyramid()
-        # self.context = ResNetcontext()
-        # self.pyramid = VGGPyramid()
 
         for p in self.pyramid.parameters():
             p.requires_grad = True
-
-        # for p in self.context.parameters():
-        #     p.requires_grad = True
 
         self.evaluation=evaluation
 
@@ -377,17 +368,12 @@ class DocAligner_model(nn.Module):
     def forward(self, im_target, im_source, im_target_256, im_source_256):
         # all indices 1 refer to target images
         # all indices 2 refer to source images
-        # im_target, im_source, im_target_256, im_source_256 = input[0],input[1],input[2],input[3]
         b, _, h_full, w_full = im_target.size()
-        # b, _, h_256, w_256 = im_target_256.size()
         b, _, h_256, w_256 = im_target.size()
         h_256,w_256 = 1024,1024
         div = self.div
 
         # extract pyramid features
-        # with torch.no_grad():
-            #[b,64,org,org],[ssssb,128,org/2,org/2],[b,128,org/4,org/4],[b,256,org/8,org/8],
-        # with torch.no_grad():
         with autocast(enabled=True):
             im1_pyr = self.pyramid(im_target.half())
             im2_pyr = self.pyramid(im_source.half())
@@ -401,12 +387,6 @@ class DocAligner_model(nn.Module):
             c23 = im2_pyr[-2]
             c14 = im1_pyr[-1]
             c24 = im2_pyr[-1]
-
-            # im1_pyr,im2_pyr,im_source = 0,0,0
-            # del im1_pyr
-            # del im2_pyr
-            # del im_target
-            # del im_source
 
 
         # RESOLUTION 256x256
@@ -514,17 +494,13 @@ class DocAligner_model(nn.Module):
                 flow2 = flow2 + self.dc_conv7_level2(self.dc_conv6_level2(self.dc_conv5_level2(x)))
 
         with autocast(enabled=True):
-            # im2_context = self.context(im_source.half())[0]
             im2_context = self.channel_increase(c21)
             net,inp_origin = torch.split(im2_context,[96,96],dim=1)  # net 128x256x256, inp 128x256x256
 
             flow_full = F.interpolate(flow2,(1024,1024))
             flow = F.interpolate(flow2,(256,256))
 
-
         flow_predictions = []
-
-
 
         for _ in range(7):
             with autocast(enabled=True):
@@ -542,7 +518,6 @@ class DocAligner_model(nn.Module):
 
         flow1 = flow_predictions[0]
 
-        # print(flow1.shape,flow2.shape,flow3.shape,flow4.shape)
         if self.evaluation:
             return flow1
         else:

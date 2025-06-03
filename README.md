@@ -37,20 +37,20 @@ bash train.sh
 
 ## Inference
 1. Weight preparation:
-    * Put non-rigid pre-alignment module weights [mbd.pkl](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp) to `data/MBD/checkpoint/`
-    * Put hierarchical alignment module weights [checkpoint.pkl](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp) to `checkpoint/docaligner/`
+    * Put non-rigid pre-alignment module weights [mbd.pkl](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp) and  hierarchical alignment module weights [docaligner.pkl](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp) to `checkpoint/`
 
 2. Data preparation: 
     * Source and target images need to be put in `data/example`. 
     * The names of source captured images should end with `_origin`, while names of target clean images should end with `_target`. 
     * The names of paired source and target should be the same except for the different name endings.
-    * Put some flows into `data/` for augmentation in the subsequent self-supervised steps.
-    Put some [flow map](https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp) to `data/augmentation_flow`, which can assist the following self-supervision steps (step 4).
+    * Generate some flow maps in the `data/DocAlign12K/forwardmap/` directory using `data/DocAlign12K/synthv2.py`, or download [existing ones(https://1drv.ms/f/s!Ak15mSdV3Wy4ibRvLXIMbJoIzkpSpQ?e=mkiGBp)]. This will facilitate the subsequent self-supervised learning step (Step 4).
+
 
 3. Perform non-rigid pre-alignment
 ```
 python ./data/preprocess/MBD/infer.py --im_folder ./data/example
 ```
+
 4. Inference. Note that we offer 3 modes, which are 
     * 1: no self-supervision
     * 2: self-supervised optimization for each image separately
@@ -58,10 +58,12 @@ python ./data/preprocess/MBD/infer.py --im_folder ./data/example
 ```
 python infer.py --mode 3 --im_folder ./data/example
 ```
+
 5. Obtain final grid based on grid from step 2 and 3. Such final grid correlates the source target clean image toward the source captured image.
 ```
 python tools/sum_backwardmap.py --im_folder ./data/example
 ```  
+
 6. Utilization of final grid .
     * Annotation transform (COCO format): Please refer to `tools/annotate_transform.py`. We also provide a script for COCO data visualization: `tools/coco_visualize.py`.
     * Dewarping: We provide a script for dewarping the source captured image based on the final grid: `tools/dewarp.py`
