@@ -10,6 +10,8 @@
 </p>
 
 ## News 
+🔥 DocAligner is accepted by [Pattern Recognition](https://www.sciencedirect.com/science/article/abs/pii/S0031320325008520). 
+
 🔥 A comprehensive [Recommendation for Document Image Processing](https://github.com/ZZZHANG-jx/Recommendations-Document-Image-Processing) is available.
 
 
@@ -80,11 +82,14 @@ The dataset mentioned in our paper, obtained using DocAligner, for document layo
 ## Citation
 If you are using our code and data, please consider citing our paper.
 ```
-@article{zhang2023docaligner,
-title={DocAligner: Annotating Real-world Photographic Document Images by Simply Taking Pictures},
-author={Zhang, Jiaxin and Chen, Bangdong and Cheng, Hiuyi and Guo, Fengjun and Ding, Kai and Jin, Lianwen},
-journal={arXiv preprint arXiv:2306.05749},
-year={2023}}
+@article{zhang2025docaligner,
+  title={DocAligner: Automating the Annotation of Photographed Documents Through Real-virtual Alignment},
+  author={Zhang, Jiaxin and Zhang, Peirong and Cheng, Huiyi and Chen, Xinhong and Xu, Haowei and Ding, Kai and Jin, Lianwen},
+  journal={Pattern Recognition},
+  pages={112191},
+  year={2025},
+  publisher={Elsevier}
+}
 ```
 
 
